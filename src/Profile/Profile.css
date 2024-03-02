@@ -1,0 +1,35 @@
+.profile-container {
+  width:75%;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.profile-card {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.profile-card strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.profile-addresses {
+  margin-top: 20px;
+}
+
+.profile-addresses h3 {
+  margin-bottom: 10px;
+}
+
+.no-addresses {
+  margin-top: 20px;
+  color: #999; 
+}
+

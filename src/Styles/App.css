@@ -1,0 +1,137 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+ul{
+  float: left;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.backgroundImageContainer {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(https://st2.depositphotos.com/4413287/43248/i/450/depositphotos_432488430-stock-photo-abstract-simple-background-copy-space.jpg);
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerLine1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: purple;
+  color: white;
+  flex-shrink: 0;
+}
+
+.userProfile {
+  margin-right: 10px; 
+}
+
+.cartIcon {
+  margin-right: 10px;
+  background-color: white;
+}
+
+.headerTitle h1 {
+  margin-left: 20px;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  position: relative;
+}
+
+.userIcon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.userProfileDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: aquamarine;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  width: 100px;
+  height: 40px;
+  margin: 20px;
+}
+
+.homeButton {
+  background-color: #007bff;
+  color: #ffff;
+}
+
+.ordersButton {
+  background-color: #6c757d;
+  color: #ffffff;
+  width: 100px;
+  height:40px;
+  margin:20px;
+}
+
+.profileButton {
+  background-color: #28a745;
+  color: #ffffff;
+  width: 100px;
+  height:40px;
+  margin:20px;
+}
+
+
+.adminButton {
+  background-color: #343a40;
+  color: #ffffff;
+  width: 100px;
+  height:40px;
+  margin:20px;
+}
+
