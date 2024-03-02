@@ -171,7 +171,11 @@ const Home = ({ userEmail }) => {
       <div className="product-container" style={{margin:'20px'}}>
         {getFilteredProducts().map((product, index) => (
           <div key={index} className="product-item">
-            <img src={product.imageUrls} style={{ width: '200px', height: '200px' }} alt={product.name} />
+            {product.imageUrls ? 
+                  (<img src={product.imageUrls} alt="Product" style={{ width: '200px', height: '200px' }} />
+                    ) : (
+                        <img src="https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png" alt="No Image" style={{ width: '200px', height: '200px' }} />
+                    )}
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <p>Price: ${product.price}, Available:<strong>{product.quantityAvailable}</strong></p>
