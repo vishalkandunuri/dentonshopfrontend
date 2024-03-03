@@ -1,12 +1,13 @@
 import configDetails from "../../Config/Config";
 
-async function AllManufactures() {
+async function AllManufactures(authIdToken) {
     try {
         const url = `${configDetails.baseUrl}${configDetails.allManufacturers}`;  
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization':authIdToken
             }
         });
         const ManufacturersData = await response.json();

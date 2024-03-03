@@ -99,20 +99,20 @@ function App({ signOut, user }) {
         </div>
         <Switch>
           <Route path="/orders">
-            <OrdersHome userEmail={userEmail} />
+            <OrdersHome authIdToken={authIdToken} userEmail={userEmail} />
           </Route>
           <Route path="/profile">
-            <Profile userEmail={userEmail} authUserName={authUserName} authPhone={authPhone}/>
+            <Profile authIdToken={authIdToken} userEmail={userEmail} authUserName={authUserName} authPhone={authPhone}/>
           </Route>
           <Route path="/admin" >
             {(configDetails.adminUsers.includes(userEmail))?
             <AdminHome userEmail={userEmail} authIdToken={authIdToken} />:<AdminPageError/>}
           </Route>
           <Route path="/cart">
-            <CartItems userEmail={userEmail} userName={authUserName} userPhone={authPhone}/>
+            <CartItems authIdToken={authIdToken} userEmail={userEmail} userName={authUserName} userPhone={authPhone}/>
           </Route>
           <Route path="/">
-            <Home userEmail={userEmail}/>
+            <Home authIdToken={authIdToken} userEmail={userEmail}/>
           </Route>
         </Switch>
       </div>

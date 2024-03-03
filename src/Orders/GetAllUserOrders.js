@@ -1,9 +1,15 @@
 import configDetails from "../Config/Config";
 
-async function getAllUserOrders(userEmail){
+async function getAllUserOrders(userEmail, authIdToken){
     try{
         const api = `${configDetails.baseUrl}${configDetails.getUserOrder}?userEmail=${userEmail}`;
-        const response = await fetch(api);
+        const response = await fetch(api, {
+            method: 'GET',
+            headers: {
+            "Content-Type": "application/json",
+            'Authorization':authIdToken
+            }
+        });
         if(response.ok){
             const orders = await response.json();
             return orders;

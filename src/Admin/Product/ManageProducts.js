@@ -7,7 +7,7 @@ import AllCategories from "./AllCategories";
 import AllManufacturers from "./AllManufacturers";
 import AllSubcategories from "./AllSubCategories";
 
-const ManageProducts = () => {
+const ManageProducts = ({authIdToken, userEmail}) => {
     const [allProducts, setAllProducts] = useState([]);
     const [isAddProductPopupOpen, setIsAddProductPopupOpen] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
@@ -28,7 +28,8 @@ const ManageProducts = () => {
             const response = await fetch(api, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
                 }
             });
             const productsData = await response.json();
@@ -41,8 +42,16 @@ const ManageProducts = () => {
 
     const fetchAllCategories = async () => {
         try {
-            const categories = await AllCategories();
-            setAllCategories(categories);
+            const url = `${configDetails.baseUrl}${configDetails.allCategories}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
+                }
+            });
+            const categoriesData = await response.json();
+            setAllCategories(categoriesData);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
@@ -50,8 +59,16 @@ const ManageProducts = () => {
 
     const fetchAllManufacturers = async () => {
         try {
-            const manufacturers = await AllManufacturers();
-            setAllManufacturers(manufacturers);
+            const url = `${configDetails.baseUrl}${configDetails.allManufacturers}`;  
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
+                }
+            });
+            const ManufacturersData = await response.json();
+            setAllManufacturers(ManufacturersData);
         } catch (error) {
             console.error("Failed to fetch manufacturers:", error);
         }
@@ -59,8 +76,16 @@ const ManageProducts = () => {
 
     const fetchAllSubcategories = async () => {
         try {
-            const subcategories = await AllSubcategories();
-            setAllSubcategories(subcategories);
+            const url = `${configDetails.baseUrl}${configDetails.allSubCategories}`;  
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
+                }
+            });
+            const subCategoriesData = await response.json();
+            setAllSubcategories(subCategoriesData);
         } catch (error) {
             console.error("Failed to fetch subcategories:", error);
         }
@@ -136,8 +161,8 @@ const ManageProducts = () => {
                     )}
                 </tbody>
             </table>
-            {isAddProductPopupOpen && <AddProduct onClose={closeAddProductPopup} />}
-            {editProduct && <EditProduct product={editProduct} onClose={closeEditProductPopup} />}
+            {isAddProductPopupOpen && <AddProduct onClose={closeAddProductPopup} authIdToken={authIdToken} />}
+            {editProduct && <EditProduct product={editProduct} onClose={closeEditProductPopup} authIdToken={authIdToken} />}
         </div>
     );
 }

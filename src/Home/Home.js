@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductsHome.css';
 import configDetails from '../Config/Config';
 
-const Home = ({ userEmail }) => {
+const Home = ({ userEmail, authIdToken }) => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -11,44 +11,75 @@ const Home = ({ userEmail }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdatingCart, setIsUpdatingCart] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
 
-        const productsApi = `${configDetails.baseUrl}${configDetails.allProducts}`;
-        const productsResponse = await fetch(productsApi);
-        if (productsResponse.ok) {
-          const fetchedProducts = await productsResponse.json();
-          setProducts(fetchedProducts);
-
-          const categoryObj = {};
-          fetchedProducts.forEach((product) => {
-            categoryObj[product.category] = true;
-          });
-          setCategories(categoryObj);
-        } else {
-          console.error('Failed to fetch products');
+      const productsApi = `${configDetails.baseUrl}${configDetails.allProducts}`;
+      const productsResponse = await fetch(productsApi, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization':authIdToken
         }
+      });
+      if (productsResponse.ok) {
+        const fetchedProducts = await productsResponse.json();
+        setProducts(fetchedProducts);
 
-        const cartItemsApi = `${configDetails.baseUrl}${configDetails.getUserCartItems}?email=${userEmail}`;
-        const cartItemsResponse = await fetch(cartItemsApi);
-        if (cartItemsResponse.ok) {
-          const fetchedExistingCart = await cartItemsResponse.json();
-          setExistingCart(fetchedExistingCart);
-          updateCartLocally(fetchedExistingCart);
-        } else {
-          console.error('Failed to fetch existing cart items');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
+        const categoryObj = {};
+        fetchedProducts.forEach((product) => {
+          categoryObj[product.category] = true;
+        });
+        setCategories(categoryObj);
+      } else {
+        console.error('Failed to fetch products');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchData();
+  const fetchCartItems = async (userEmail) => {
+    try {
+      setIsLoading(true);
+
+      const cartItemsApi = `${configDetails.baseUrl}${configDetails.getUserCartItems}?email=${userEmail}`;
+      const cartItemsResponse = await fetch(cartItemsApi, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization':authIdToken
+        }
+      });
+      if (cartItemsResponse.ok) {
+        const fetchedExistingCart = await cartItemsResponse.json();
+        setExistingCart(fetchedExistingCart);
+        updateCartLocally(fetchedExistingCart);
+      } else {
+        console.error('Failed to fetch existing cart items');
+      }
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    // This effect does not depend on userEmail, so it only runs once on component mount
+  }, []); // Empty dependency array means this runs once on mount
+
+  useEffect(() => {
+    if (userEmail) {
+      fetchCartItems(userEmail);
+    }
+    // This effect depends on userEmail, so it runs on mount and whenever userEmail changes
   }, [userEmail]);
+
 
   const updateCartLocally = (fetchedExistingCart) => {
     const updatedCart = {};
@@ -73,7 +104,8 @@ const Home = ({ userEmail }) => {
       const response = await fetch(api, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':authIdToken
         }
       });
       if (response.ok) {
@@ -146,6 +178,11 @@ const Home = ({ userEmail }) => {
     });
   };
 
+  useEffect(() => {
+      fetchProducts();
+  }, []); 
+
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -153,6 +190,7 @@ const Home = ({ userEmail }) => {
   return (
     <div>
       <div className="filters" style={{ display: 'flex', alignItems: 'center', backgroundColor:'lightgrey', borderRadius:'10px', margin:'20px' }}>
+        <button onClick={fetchProducts} style={{width:'auto', backgroundColor:'green'}}>Fetch Products</button>
         <h4 style={{ margin: '20px' }}> Filter by Categories</h4>
         {Object.keys(categories).map((category) => (
             <div key={category} style={{ margin: '20px' }}>

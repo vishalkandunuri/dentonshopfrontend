@@ -3,7 +3,7 @@ import getAllUserOrders from './GetAllUserOrders';
 import getOrderCartItems from './GetOrderCartItems';
 import './ViewOrder.css'
 
-const OrdersHome = ({ userEmail }) => {
+const OrdersHome = ({ userEmail, authIdToken }) => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,25 +11,25 @@ const OrdersHome = ({ userEmail }) => {
     const [cartItems, setCartItems] = useState([]);
     const [showPopup, setShowPopup] = useState(false); 
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const userOrders = await getAllUserOrders(userEmail);
-                const sortedOrders = userOrders.sort((a, b) => new Date(b.orderedOn) - new Date(a.orderedOn));
-                setOrders(sortedOrders);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        };
+    const fetchOrders = async () => {
+        try {
+            const userOrders = await getAllUserOrders(userEmail, authIdToken);
+            const sortedOrders = userOrders.sort((a, b) => new Date(b.orderedOn) - new Date(a.orderedOn));
+            setOrders(sortedOrders);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchOrders();
     }, [userEmail]);
 
     const handleViewOrder = async (order) => {
         try {
-            const items = await getOrderCartItems(order.items);
+            const items = await getOrderCartItems(order.items, authIdToken);
             setCartItems(items);
             console.log(items)
             setSelectedOrder(order)
@@ -40,8 +40,8 @@ const OrdersHome = ({ userEmail }) => {
     };
 
     const closePopup = () => {
-        setCartItems([]); // Reset cart items
-        setShowPopup(false); // Hide the popup
+        setCartItems([]); 
+        setShowPopup(false); 
     };
 
     if (loading) {
@@ -57,11 +57,11 @@ const OrdersHome = ({ userEmail }) => {
         const currentIndex = statusOrder.indexOf(currentStatus);
         const checkIndex = statusOrder.indexOf(statusToCheck);
         if (currentIndex > checkIndex) {
-            return 'active completed'; // Completed statuses get both 'active' and 'completed' classes
+            return 'active completed'; 
         } else if (currentIndex === checkIndex) {
-            return 'active'; // Current status gets 'active' class
+            return 'active'; 
         }
-        return ''; // Statuses not yet reached get no class
+        return ''; 
     };
 
 
@@ -79,6 +79,7 @@ const OrdersHome = ({ userEmail }) => {
     return (
         <div>
             <h2 style={{ textAlign: 'center' }}>All My Orders</h2>
+            <button style={{width:'auto'}} onClick={fetchOrders}>Fetch Orders</button>
             {orders.length === 0 ? (
                 <div>No orders found at thius time. Please try again after sometime.</div>
             ) : (

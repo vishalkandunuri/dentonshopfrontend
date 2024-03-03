@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './AddAddress.css'; 
 import configDetails from "../Config/Config";
 
-const AddAddress = ({ onClose, userEmail }) => {
+const AddAddress = ({ onClose, userEmail, authIdToken }) => {
     const [addressDetails, setAddressDetails] = useState({
         name:"",
         address1: "",
@@ -26,7 +26,8 @@ const AddAddress = ({ onClose, userEmail }) => {
             const response = await fetch(`${configDetails.baseUrl}${configDetails.addAddress}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
                 },
                 body: JSON.stringify({
                     name: addressDetails.name,

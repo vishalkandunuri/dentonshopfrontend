@@ -4,7 +4,7 @@ import getOrderCartItems from './GetOrderCartItems';
 import "../../Orders/ViewOrder.css"
 import configDetails from '../../Config/Config';
 
-const AdminOrdersHome = ({ userEmail }) => {
+const AdminOrdersHome = ({ userEmail, authIdToken }) => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const AdminOrdersHome = ({ userEmail }) => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const userOrders = await getAllUserOrders();
+                const userOrders = await getAllUserOrders(authIdToken);
                 const sortedOrders = userOrders.sort((a, b) => new Date(b.orderedOn) - new Date(a.orderedOn));
                 setOrders(sortedOrders);
                 console.log(orders)
@@ -31,7 +31,7 @@ const AdminOrdersHome = ({ userEmail }) => {
 
     const handleViewOrder = async (order) => {
         try {
-            const items = await getOrderCartItems(order.items);
+            const items = await getOrderCartItems(order.items, authIdToken);
             setCartItems(items);
             console.log(items)
             setSelectedOrder(order)
@@ -42,8 +42,8 @@ const AdminOrdersHome = ({ userEmail }) => {
     };
 
     const closePopup = () => {
-        setCartItems([]); // Reset cart items
-        setShowPopup(false); // Hide the popup
+        setCartItems([]); 
+        setShowPopup(false); 
     };
 
     if (loading) {
@@ -59,11 +59,11 @@ const AdminOrdersHome = ({ userEmail }) => {
         const currentIndex = statusOrder.indexOf(currentStatus);
         const checkIndex = statusOrder.indexOf(statusToCheck);
         if (currentIndex > checkIndex) {
-            return 'active completed'; // Completed statuses get both 'active' and 'completed' classes
+            return 'active completed'; 
         } else if (currentIndex === checkIndex) {
-            return 'active'; // Current status gets 'active' class
+            return 'active'; 
         }
-        return ''; // Statuses not yet reached get no class
+        return ''; 
     };
 
 
@@ -83,6 +83,7 @@ const AdminOrdersHome = ({ userEmail }) => {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization':authIdToken
                 }
             });
 

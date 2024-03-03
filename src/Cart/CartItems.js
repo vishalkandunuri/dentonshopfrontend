@@ -7,7 +7,7 @@ import configDetails from "../Config/Config";
 
 const stripePromise = loadStripe('pk_test_51OnwcNGMy5ZyUXeSrSWG3ytVYUx6qMm8568XrbFPSjwEO5uXwpt97DeXLVnD0Cyq2ivs1j8zGnVNcj0bvSARKrq100BBXTBu9v');
 
-const CartItems = ({ userEmail, userName, userPhone }) => {
+const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
   const [userCartItems, setUserCartItems] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
@@ -19,7 +19,8 @@ const CartItems = ({ userEmail, userName, userPhone }) => {
       const response = await fetch(api, {
         method: 'GET',
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization':authIdToken
         }
       });
 
@@ -66,7 +67,11 @@ const CartItems = ({ userEmail, userName, userPhone }) => {
         {userCartItems ? userCartItems.map((item, index) => (
           <div key={index} className="cart-item">
             <div className="item-image">
-              <img src={item.product.imageUrls} style={{ width: '100px', height: '100px' }} alt="Item" />
+              {item.product.imageUrls ? 
+                  (<img src={item.product.imageUrls} alt="Product" style={{ width: '200px', height: '200px' }} />
+                    ) : (
+                        <img src="https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png" alt="No Image" style={{ width: '200px', height: '200px' }} />
+                    )}
             </div>
             <div className="item-details">
               <div className="item-info">
@@ -94,6 +99,7 @@ const CartItems = ({ userEmail, userName, userPhone }) => {
             name={userName}
             phoneNumber={userPhone}
             allUserCartItems={userCartItems}
+            authIdToken={authIdToken}
           />
         </Elements>
       }

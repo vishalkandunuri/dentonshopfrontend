@@ -1,9 +1,15 @@
 import configDetails from "../Config/Config";
 
-async function getAllUserAddresses(userEmail) {
+async function getAllUserAddresses(userEmail, authIdToken) {
     try {
         const api = `${configDetails.baseUrl}${configDetails.allUserAddreses}?email=${userEmail}`;
-        const response = await fetch(api);
+        const response = await fetch(api, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization':authIdToken
+            }
+        });
         if (response.ok) {
             const addresses = await response.json();
             return addresses;

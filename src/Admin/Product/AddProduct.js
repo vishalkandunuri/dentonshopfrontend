@@ -6,7 +6,7 @@ import AllSubcategories from "./AllSubCategories";
 import AllManufacturers from "./AllManufacturers";
 import configDetails from "../../Config/Config";
 
-const AddProduct = ({ onClose }) => {
+const AddProduct = ({ onClose, authIdToken }) => {
     const [productName, setProductName] = useState("");
     const [productDescription, setProductDescription] = useState("");
     const [productPrice, setProductPrice] = useState(0); 
@@ -24,9 +24,9 @@ const AddProduct = ({ onClose }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const categories = await AllCategories();
-                const manufacturers = await AllManufacturers();
-                const subcategories = await AllSubcategories();
+                const categories = await AllCategories(authIdToken);
+                const manufacturers = await AllManufacturers(authIdToken);
+                const subcategories = await AllSubcategories(authIdToken);
 
                 setAllCategories(categories);
                 setAllManufacturers(manufacturers);
@@ -45,7 +45,8 @@ const AddProduct = ({ onClose }) => {
             const response = await fetch(api, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
                 },
                 body: JSON.stringify({
                     name: productName,

@@ -5,7 +5,7 @@ import AddAddress from "./AddAddress";
 import UpdateAddress from "./UpdateAddress"; 
 import configDetails from "../Config/Config";
 
-const Profile = ({ userEmail, authUserName, authPhone }) => {
+const Profile = ({ userEmail, authUserName, authPhone, authIdToken }) => {
     const [allAddresses, setAllAddresses] = useState([]);
     const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
     const [isUpdateAddressPopupOpen, setIsUpdateAddressPopupOpen] = useState(false);
@@ -19,7 +19,7 @@ const Profile = ({ userEmail, authUserName, authPhone }) => {
 
     const fetchUserAddresses = async () => {
         try {
-            const addresses = await getAllUserAddresses(userEmail);
+            const addresses = await getAllUserAddresses(userEmail, authIdToken);
             setAllAddresses(addresses);
         } catch (error) {
             console.error("Failed to fetch addresses:", error);
@@ -53,7 +53,11 @@ const Profile = ({ userEmail, authUserName, authPhone }) => {
     const handleDeleteAddress = async (addressId) => {
         try {
             const response = await fetch(`${configDetails.baseUrl}${configDetails.deleteAddress}/${addressId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
+                }
             });
 
             if (response.ok) {
@@ -99,8 +103,8 @@ const Profile = ({ userEmail, authUserName, authPhone }) => {
                         <strong>Phone:</strong> {address.phone}<br />
                 </div>
             ))}
-            {isAddAddressPopupOpen && <AddAddress userEmail={userEmail} onClose={closeAddAddressPopup} />}
-            {isUpdateAddressPopupOpen && <UpdateAddress userEmail={userEmail} onClose={closeUpdateAddressPopup} address={selectedAddress} />}
+            {isAddAddressPopupOpen && <AddAddress authIdToken={authIdToken} userEmail={userEmail} onClose={closeAddAddressPopup} />}
+            {isUpdateAddressPopupOpen && <UpdateAddress authIdToken={authIdToken} userEmail={userEmail} onClose={closeUpdateAddressPopup} address={selectedAddress} />}
         </div>
     );
 };

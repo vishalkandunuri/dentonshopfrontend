@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './AddAddress.css'; 
 import configDetails from "../Config/Config";
 
-const UpdateAddress = ({ onClose, userEmail, address }) => {
+const UpdateAddress = ({ onClose, userEmail, address, authIdToken }) => {
     const [addressDetails, setAddressDetails] = useState({
         id:address.id,
         name: address.name,
@@ -40,7 +40,8 @@ const UpdateAddress = ({ onClose, userEmail, address }) => {
             const response = await fetch(`${configDetails.baseUrl}${configDetails.updateAddress}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization':authIdToken
                 },
                 body: JSON.stringify({
                     id:address.id,

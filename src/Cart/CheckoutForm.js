@@ -7,7 +7,7 @@ import AddAddress from "../Profile/AddAddress";
 import configDetails from '../Config/Config';
 import "../Styles/Loading.css"
 
-const CheckoutForm = ({ onClose, userEmail, totalCartPrice, name, phoneNumber, addressId, allUserCartItems }) => {
+const CheckoutForm = ({ authIdToken, onClose, userEmail, totalCartPrice, name, phoneNumber, addressId, allUserCartItems }) => {
     const [allUserAddresses, setAllUserAddresses] = useState([]);
     const [showAddAddressPopup, setShowAddAddressPopup] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState(null);
@@ -21,7 +21,7 @@ const CheckoutForm = ({ onClose, userEmail, totalCartPrice, name, phoneNumber, a
     useEffect(() => {
         async function fetchUserAddresses() {
             try {
-                const addresses = await getAllUserAddresses(userEmail);
+                const addresses = await getAllUserAddresses(userEmail, authIdToken);
                 setAllUserAddresses(addresses);
             } catch (error) {
                 console.error("Error fetching user addresses:", error);
@@ -39,7 +39,7 @@ const CheckoutForm = ({ onClose, userEmail, totalCartPrice, name, phoneNumber, a
     const handleAddAddressClose = async () => {
         setShowAddAddressPopup(false);
         try {
-            const addresses = await getAllUserAddresses(userEmail);
+            const addresses = await getAllUserAddresses(userEmail, authIdToken);
             setAllUserAddresses(addresses);
         } catch (error) {
             console.error("Error fetching user addresses:", error);
@@ -104,6 +104,7 @@ const CheckoutForm = ({ onClose, userEmail, totalCartPrice, name, phoneNumber, a
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization':authIdToken
             }
         })
         .then(response => {

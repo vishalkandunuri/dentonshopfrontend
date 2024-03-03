@@ -1,12 +1,13 @@
 import configDetails from "../../Config/Config";
 
-async function AllSubCategories() {
+async function AllSubCategories(authIdToken) {
     try {
         const url = `${configDetails.baseUrl}${configDetails.allSubCategories}`;  
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization':authIdToken
             }
         });
         const subCategoriesData = await response.json();

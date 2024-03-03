@@ -7,7 +7,8 @@ async function getAllCartItems({userEmail}){
         const response=await fetch(api,{
             method:'GET',
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':authIdToken
             }
         })
         if(response.ok){

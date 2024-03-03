@@ -26,6 +26,7 @@ const ManageManufacturers = ({ userEmail, authIdToken }) => {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
+              'Authorization':authIdToken
           }
       });
 
@@ -56,6 +57,7 @@ const ManageManufacturers = ({ userEmail, authIdToken }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           name: newManufacturer,
@@ -87,7 +89,8 @@ const ManageManufacturers = ({ userEmail, authIdToken }) => {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           id, 
@@ -116,6 +119,7 @@ const ManageManufacturers = ({ userEmail, authIdToken }) => {
         method: 'DELETE',
          headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         }
       });
 

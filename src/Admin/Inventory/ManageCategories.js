@@ -20,6 +20,7 @@ const ManageCategories = ({ userEmail, authIdToken }) => {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
+              'Authorization':authIdToken
           }
       });
 
@@ -56,6 +57,7 @@ const ManageCategories = ({ userEmail, authIdToken }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           name: newCategory 
@@ -85,7 +87,8 @@ const ManageCategories = ({ userEmail, authIdToken }) => {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           id: editCategoryId, 
@@ -114,6 +117,7 @@ const ManageCategories = ({ userEmail, authIdToken }) => {
         method: 'DELETE',
          headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         }
       });
 

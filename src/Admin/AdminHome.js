@@ -5,7 +5,7 @@ import AdminOrdersHome from"./Orders/AdminOrdersHome"
 import configDetails from "../Config/Config";
 
 const AdminHome = ({ userEmail, authIdToken }) => {
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState('manageOrders');
 
   const handleModeChange = (newMode) => {
     setMode(newMode);

@@ -11,12 +11,14 @@ const ManageSubCategories = ({ userEmail, authIdToken }) => {
   const [alert, setAlert] = useState(null);
 
   const fetchSubCategories = async () => {  
+     console.log(authIdToken)
     try {
       const url = `${configDetails.baseUrl}${configDetails.allSubCategories}`;
       const response = await fetch(url,{
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
+              'Authorization':authIdToken
           }
       });
 
@@ -53,6 +55,7 @@ const ManageSubCategories = ({ userEmail, authIdToken }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           name: newSubCategory 
@@ -82,7 +85,8 @@ const ManageSubCategories = ({ userEmail, authIdToken }) => {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':authIdToken
         },
         body: JSON.stringify({ 
           id: editSubCategoryId, 
@@ -111,6 +115,7 @@ const ManageSubCategories = ({ userEmail, authIdToken }) => {
         method: 'DELETE',
          headers: {
           'Content-Type': 'application/json',
+          'Authorization':authIdToken
         }
       });
 

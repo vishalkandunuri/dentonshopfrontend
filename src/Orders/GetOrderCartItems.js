@@ -1,10 +1,16 @@
 import configDetails from "../Config/Config";
 
-async function getOrderCartItems(cartItemIds){
+async function getOrderCartItems(cartItemIds, authIdToken){
     try{
         const cartItemsIdsString = cartItemIds.join(','); 
         const api = `${configDetails.baseUrl}/getordercartitems?cartItemsIds=${cartItemsIdsString}`;
-        const response = await fetch(api);
+        const response = await fetch(api, {
+            method: 'GET',
+            headers: {
+            "Content-Type": "application/json",
+            'Authorization':authIdToken
+            }
+        });
         if(response.ok){
             const cartItems = await response.json();
             return cartItems;
