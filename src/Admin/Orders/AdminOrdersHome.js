@@ -47,11 +47,14 @@ const AdminOrdersHome = ({ userEmail, authIdToken }) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p style={{textAlign:'center'}}>Loading Orders...</p> 
+                </div>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div style={{textAlign:'center'}}>Error: Failed to fetch Orders, please hit Fetch Order button or try after sometime.</div>;
     }
 
     const getStatusClass = (currentStatus, statusToCheck) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ProductsHome.css';
 import configDetails from '../Config/Config';
+import '../Admin/Styles/Spinner.css'
 
 const Home = ({ userEmail, authIdToken }) => {
   const [products, setProducts] = useState([]);
@@ -184,7 +185,10 @@ const Home = ({ userEmail, authIdToken }) => {
 
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p style={{textAlign:'center'}}>Loading Products...</p> 
+            </div>;
   }
 
   return (
@@ -215,7 +219,7 @@ const Home = ({ userEmail, authIdToken }) => {
                         <img src="https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png" alt="No Image" style={{ width: '200px', height: '200px' }} />
                     )}
             <h3>{product.name}</h3>
-            <p>{product.description}</p>
+            <p><strong>Description:</strong> {product.description} <strong>by {product.manufacturer}</strong></p>
             <p>Price: ${product.price}, Available:<strong>{product.quantityAvailable}</strong></p>
             {cart[product.id] > 0 ? (
               <div className="quantity-controls">

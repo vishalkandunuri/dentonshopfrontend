@@ -19,7 +19,7 @@ const EditProduct = ({ product, onClose, authIdToken }) => {
     const [productModel, setProductModel] = useState(product.model);
     const [imageUrl, setImageUrl] = useState(product.imageUrls);
 
-    useEffect(() => {
+        useEffect(() => {
         const fetchData = async () => {
             try {
                 const categories = await AllCategories(authIdToken);
@@ -31,6 +31,9 @@ const EditProduct = ({ product, onClose, authIdToken }) => {
                 setAllSubcategories(subcategories);
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setAllCategories([]);
+                setAllManufacturers([]);
+                setAllSubcategories([]);
             }
         };
 
@@ -38,7 +41,6 @@ const EditProduct = ({ product, onClose, authIdToken }) => {
     }, []);
 
     const handleEditProduct = async () => {
-        console.log(productQuantity)
         try {
             const api = `${configDetails.baseUrl}${configDetails.updateProduct}`;
             const response = await fetch(api, {

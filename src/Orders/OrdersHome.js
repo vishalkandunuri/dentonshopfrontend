@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import getAllUserOrders from './GetAllUserOrders';
 import getOrderCartItems from './GetOrderCartItems';
 import './ViewOrder.css'
+import '../Admin/Styles/Spinner.css'
 
 const OrdersHome = ({ userEmail, authIdToken }) => {
     const [orders, setOrders] = useState([]);
@@ -45,11 +46,14 @@ const OrdersHome = ({ userEmail, authIdToken }) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p style={{textAlign:'center'}}>Loading Orders...</p> 
+                </div>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <div style={{textAlign:'center'}}>Error: Failed to fetch Orders, please hit Fetch Order button or try after sometime.</div>;
     }
 
     const getStatusClass = (currentStatus, statusToCheck) => {
@@ -81,7 +85,7 @@ const OrdersHome = ({ userEmail, authIdToken }) => {
             <h2 style={{ textAlign: 'center' }}>All My Orders</h2>
             <button style={{width:'auto'}} onClick={fetchOrders}>Fetch Orders</button>
             {orders.length === 0 ? (
-                <div>No orders found at thius time. Please try again after sometime.</div>
+                <div>No orders found at this time. Please try again after sometime.</div>
             ) : (
                 <table style={{ margin: '20px' }}>
                     <thead>

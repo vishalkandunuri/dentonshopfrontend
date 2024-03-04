@@ -4,6 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import "./CartItems.css";
 import CheckoutForm from "./CheckoutForm";
 import configDetails from "../Config/Config";
+import '../Admin/Styles/Spinner.css'
 
 const stripePromise = loadStripe('pk_test_51OnwcNGMy5ZyUXeSrSWG3ytVYUx6qMm8568XrbFPSjwEO5uXwpt97DeXLVnD0Cyq2ivs1j8zGnVNcj0bvSARKrq100BBXTBu9v');
 
@@ -56,7 +57,10 @@ const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p style={{textAlign:'center'}}>Loading CartItems...</p> 
+            </div>;; 
   }
 
   return (

@@ -122,16 +122,17 @@ const CheckoutForm = ({ authIdToken, onClose, userEmail, totalCartPrice, name, p
     }
 };
 
-
     const handleCancel = () => {
-        // Call the onClose function passed from the parent component to close the pop-up
         onClose();
     };
 
     return (
         <div className="popup">
             <div className="popup-content">
-                {paymentLoading && <div class="loader" ></div>}
+                {paymentLoading && <div className="loading-container">
+                                        <div className="loading-spinner"></div>
+                                        <p style={{textAlign:'center'}}>Processing the payment, Please wait...</p> 
+                                    </div>}
                 <h2>Checkout</h2>
                 <div>
                     <h3>Select Address</h3>
@@ -143,7 +144,6 @@ const CheckoutForm = ({ authIdToken, onClose, userEmail, totalCartPrice, name, p
                             </option>
                         ))}
                     </select>
-
 
                     <button onClick={handleAddAddress} style={{width:'auto'}}>Add New Address</button>
                 </div>

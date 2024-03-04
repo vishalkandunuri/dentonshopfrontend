@@ -6,6 +6,7 @@ import EditProduct from "./EdictProduct"
 import AllCategories from "./AllCategories";
 import AllManufacturers from "./AllManufacturers";
 import AllSubcategories from "./AllSubCategories";
+import '../Styles/Spinner.css'
 
 const ManageProducts = ({authIdToken, userEmail}) => {
     const [allProducts, setAllProducts] = useState([]);
@@ -14,6 +15,8 @@ const ManageProducts = ({authIdToken, userEmail}) => {
     const [allCategories, setAllCategories] = useState([]);
     const [allManufacturers, setAllManufacturers] = useState([]);
     const [allSubcategories, setAllSubcategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchAllProducts();
@@ -24,19 +27,24 @@ const ManageProducts = ({authIdToken, userEmail}) => {
 
     const fetchAllProducts = async () => {
         try {
+            setIsLoading(true);
             const api = `${configDetails.baseUrl}${configDetails.allProducts}`;
             const response = await fetch(api, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization':authIdToken
+                    'Authorization': authIdToken
                 }
             });
             const productsData = await response.json();
             const sortedProducts = productsData.sort((a, b) => new Date(b.addedOn) - new Date(a.addedOn));
             setAllProducts(sortedProducts);
+            setError(null);
         } catch (error) {
             console.error("Failed to fetch products:", error);
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -108,6 +116,17 @@ const ManageProducts = ({authIdToken, userEmail}) => {
         setEditProduct(null);
         fetchAllProducts();
     };
+
+    if (isLoading) {
+        return <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p style={{textAlign:'center'}}>Loading Products...</p> 
+                </div>;
+    }
+
+    if (error) {
+        return <div style={{ textAlign: 'center' }}>Error: Failed to fetch products, please try again later.</div>;
+    }
 
     return (
         <div style={{ width: 'calc(100% - 40px)' }}>

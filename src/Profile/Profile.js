@@ -10,6 +10,7 @@ const Profile = ({ userEmail, authUserName, authPhone, authIdToken }) => {
     const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
     const [isUpdateAddressPopupOpen, setIsUpdateAddressPopupOpen] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState(null); // State to store the selected address for update
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (userEmail) {
@@ -19,10 +20,13 @@ const Profile = ({ userEmail, authUserName, authPhone, authIdToken }) => {
 
     const fetchUserAddresses = async () => {
         try {
+            setIsLoading(true);
             const addresses = await getAllUserAddresses(userEmail, authIdToken);
             setAllAddresses(addresses);
         } catch (error) {
             console.error("Failed to fetch addresses:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -88,21 +92,27 @@ const Profile = ({ userEmail, authUserName, authPhone, authIdToken }) => {
                 <h3>All Addresses</h3>
                 <button onClick={openAddAddressPopup} style={{ width: 'auto', backgroundColor: 'aqua', fontSize: '15px' }}> Add Address</button>
             </div>
-            {allAddresses.map((address, index) => (
-                <div className="profile-addresses" key={index} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#ffffff' }}>
-                    <h4>Address {index + 1}: 
-                            <button onClick={() => handleEditAddress(address)}>Edit</button>
-                            <button onClick={() => handleDeleteAddress(address.id)}>Delete</button>
-                    </h4>
-                        <strong>Name:</strong> {address.name}<br />
-                        <strong>Address Line 1:</strong> {address.address1}<br />
-                        <strong>Address Line 2:</strong> {address.address2}<br />
-                        <strong>City:</strong> {address.city}<br />
-                        <strong>State:</strong> {address.state}<br />
-                        <strong>ZIP Code:</strong> {address.zip}<br />
-                        <strong>Phone:</strong> {address.phone}<br />
-                </div>
-            ))}
+            {isLoading && <p>Loading addresses...</p>}
+            {allAddresses.length === 0 && !isLoading && <p style={{textAlign:'center'}}>No addresses found, try after sometime.</p>}
+            {allAddresses.length > 0 && (
+                <>
+                    {allAddresses.map((address, index) => (
+                        <div className="profile-addresses" key={index} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#ffffff' }}>
+                            <h4>Address {index + 1}: 
+                                <button onClick={() => handleEditAddress(address)}>Edit</button>
+                                <button onClick={() => handleDeleteAddress(address.id)}>Delete</button>
+                            </h4>
+                            <strong>Name:</strong> {address.name}<br />
+                            <strong>Address Line 1:</strong> {address.address1}<br />
+                            <strong>Address Line 2:</strong> {address.address2}<br />
+                            <strong>City:</strong> {address.city}<br />
+                            <strong>State:</strong> {address.state}<br />
+                            <strong>ZIP Code:</strong> {address.zip}<br />
+                            <strong>Phone:</strong> {address.phone}<br />
+                        </div>
+                    ))}
+                </>
+            )}
             {isAddAddressPopupOpen && <AddAddress authIdToken={authIdToken} userEmail={userEmail} onClose={closeAddAddressPopup} />}
             {isUpdateAddressPopupOpen && <UpdateAddress authIdToken={authIdToken} userEmail={userEmail} onClose={closeUpdateAddressPopup} address={selectedAddress} />}
         </div>
