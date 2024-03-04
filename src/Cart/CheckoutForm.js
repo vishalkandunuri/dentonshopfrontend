@@ -147,7 +147,7 @@ const CheckoutForm = ({ authIdToken, onClose, userEmail, totalCartPrice, name, p
 
                     <button onClick={handleAddAddress} style={{width:'auto'}}>Add New Address</button>
                 </div>
-                {showAddAddressPopup && <AddAddress onClose={handleAddAddressClose} userEmail={userEmail} />}
+                {showAddAddressPopup && <AddAddress onClose={handleAddAddressClose} userEmail={userEmail} authIdToken={authIdToken} />}
                 <form onSubmit={handleSubmit}>
                     <label>
                         Credit/Debit Card Details:
