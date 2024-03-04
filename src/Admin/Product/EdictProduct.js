@@ -117,27 +117,27 @@ const EditProduct = ({ product, onClose, authIdToken }) => {
                     <label>Manufacturer:</label>
                     <select value={selectedManufacturer} onChange={(e) => setSelectedManufacturer(e.target.value)}>
                         <option value="">Select a Manufacturer</option>
-                        {allManufacturers.map(manufacturer => (
+                        {allManufacturers?allManufacturers.map(manufacturer => (
                             <option key={manufacturer.id} value={manufacturer.name}>{manufacturer.name}</option>
-                        ))}
+                        )):"No Manufacturers found."}
                     </select>
                 </div>
                 <div>
                     <label>Category:</label>
                     <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
                         <option value="">Select a Category</option>
-                        {allCategories.map(category => (
+                        {allCategories?allCategories.map(category => (
                             <option key={category.id} value={category.name}>{category.name}</option>
-                        ))}
+                        )):"No Categories found."}
                     </select>
                 </div>
                 <div>
                     <label>Subcategory:</label>
                     <select value={selectedSubcategory} onChange={(e) => setSelectedSubcategory(e.target.value)}>
                         <option value="">Select a Subcategory</option>
-                        {allSubcategories.map(subcategory => (
+                        {allSubcategories?allSubcategories.map(subcategory => (
                             <option key={subcategory.id} value={subcategory.name}>{subcategory.name}</option>
-                        ))}
+                        )):"No SubCategories found."}
                     </select>
                 </div>
                 <div>

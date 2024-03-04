@@ -49,7 +49,11 @@ const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
   }, [userEmail]);
 
   const handleCheckout = () => {
-    setShowCheckoutForm(true); 
+    if(userCartItems.length>0){
+      setShowCheckoutForm(true);
+    }else{
+      alert("No products in the cart. Please add products before checkout.")
+    } 
   };
 
   const handleCloseCheckoutForm = () => {
@@ -68,7 +72,7 @@ const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
       <h2 className="cart-heading" style={{textAlign:'center'}}>Your Cart</h2>
       <button onClick={fetchCartItems}>Fetch Cart</button>
       <div className="cart-items">
-        {userCartItems ? userCartItems.map((item, index) => (
+        {userCartItems && userCartItems.length > 0 ? userCartItems.map((item, index) => (
           <div key={index} className="cart-item">
             <div className="item-image">
               {item.product.imageUrls ? 
@@ -87,7 +91,7 @@ const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
               </div>
             </div>
           </div>
-        )) : ""}
+        )) : <p style={{textAlign:'center', color:'red', fontSize:'18px'}}>No Products found at this time, please add products to cart / click fetch CartItems / try after sometime.</p>}
       </div>
       <div className="total-price">
         <p style={{textAlign:'end'}}>Total Cart Price: <strong>${totalCartPrice.toFixed(2)}</strong></p>
