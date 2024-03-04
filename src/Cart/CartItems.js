@@ -86,9 +86,9 @@ const CartItems = ({ userEmail, userName, userPhone, authIdToken }) => {
                 <span className="item-name" style={{ margin: '5px' }}>{item.product.name}</span>
               </div>
               <div className="item-quantity">
-                <span>Quantity: {item.quantity}x</span>${item.product.price}
-                <p>Total Price: <strong>${item.product.price * item.quantity}</strong></p>
-              </div>
+                <span>Quantity: {item.quantity}x</span>${item.product.price.toFixed(2)}
+                <p>Total Price: <strong>${(item.product.price * item.quantity).toFixed(2)}</strong></p>
+            </div>
             </div>
           </div>
         )) : <p style={{textAlign:'center', color:'red', fontSize:'18px'}}>No Products found at this time, please add products to cart / click fetch CartItems / try after sometime.</p>}
